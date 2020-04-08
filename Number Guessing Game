@@ -1,0 +1,45 @@
+import random
+
+z = random.randint(1,20) 
+
+list1 = []
+
+while (True):
+    try:
+        x = int(input("How many tries would you like? Enter a number between 1 and 5: "))
+    except:
+        print("Please choose an integer value")
+    else:
+        if (x <= 5) and (x > 0):
+            numberOfTries = x
+            break
+        else:
+            print("Pick an integer within range")
+
+while (numberOfTries - 1 >= 0):
+    print("You have", numberOfTries,"guesses left.")
+    while True:
+        try:
+            i = int(input("Guess a number between 1 and 20: "))
+        except:
+            print("Please choose an integer value")
+        else:
+            if (i <= 20) and (i >= 0):
+                list1.append(i)
+                break
+            else:
+                print("Pick an integer within range")
+    if (i == z):
+        print("Correct!")
+        print("The correct number was", z,". Your guesses were", list1)
+        break
+    elif (i > z):
+        print("Your number is too high, please try again.")
+        numberOfTries -= 1
+    elif (i < z):
+        print("Your number is too low, please try again.")
+        numberOfTries -= 1
+
+if (numberOfTries == 0):
+    print("You ran out of guesses :(")
+    print("The correct number was", z,". Your guesses were", list1)
