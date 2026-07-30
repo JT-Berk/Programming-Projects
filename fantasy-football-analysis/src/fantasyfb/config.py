@@ -40,6 +40,27 @@ BOOM_BUST_THRESHOLDS = {
     "DST": {"boom": 12, "bust": 2},
 }
 
+# Phase 2 (draft rankings): nflverse's weekly stats contain zero K/DST rows,
+# so value-based rankings are scoped to the positions that actually exist.
+RANKED_POSITIONS = ["QB", "RB", "WR", "TE"]
+
+# Recency weighting for the projection stand-in, keyed by seasons-ago (0 =
+# most recent season). Renormalized over whichever seasons a player actually
+# has -- see fantasyfb.analysis.rankings.project_player_value.
+RECENCY_WEIGHTS = {0: 0.5, 1: 0.3, 2: 0.2}
+
+# Shrinkage credibility constant (games / (games + K)) applied to low-sample
+# seasons before they're blended into a projection.
+MIN_GAMES_CREDIBILITY = 6
+
+# Replacement level is the Nth-ranked player at a position; this offset picks
+# the player just past the last starter slot (rank N+1) as "replacement".
+REPLACEMENT_RANK_OFFSET = 1
+
+# Tier-break threshold: a new tier starts wherever the gap to the next-ranked
+# player exceeds mean(gaps) + this multiplier * std(gaps).
+TIER_GAP_STD_MULTIPLIER = 1.0
+
 SCORING_PRESETS = {
     "standard": {
         "pass_yd": 0.04,
