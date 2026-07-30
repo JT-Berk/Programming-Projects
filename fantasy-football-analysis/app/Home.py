@@ -20,7 +20,7 @@ st.markdown(
 |---|---|---|
 | 0 | Data layer + app scaffold | ✅ Done |
 | 1 | Player stats & trends analysis | ✅ Done |
-| 2 | Draft rankings & tools | 🔜 Planned |
+| 2 | Draft rankings & tools | ✅ Done |
 | 3 | Weekly start/sit & lineup optimizer | 🔜 Planned |
 | 4 | Trade analyzer | 🔜 Planned |
     """

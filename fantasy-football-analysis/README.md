@@ -64,12 +64,35 @@ Each phase ships a working, testable increment before the next one starts.
   public record (e.g. a player's known bust/boom weeks).
 
 ### Phase 2 — Draft rankings & tools
-- Value-based drafting (VBD) rankings using replacement-level baselines per
-  position/league size.
-- Tiering via clustering on projected value.
-- ADP comparison (sleeper/reach identification) where ADP data is available.
-- **Validation**: correlate computed rankings against actual historical ADP
-  or expert consensus rank to sanity-check the value model.
+- Scoped to QB/RB/WR/TE only: nflverse's weekly stats contain zero K/DST
+  rows, so there's no real data to rank those positions against.
+- "Projected points" is a from-scratch, recency-weighted blend of each
+  player's own scoring history across seasons, with shrinkage toward the
+  positional mean for low-sample seasons — an informed historical baseline,
+  not a real projections model (that's a future phase).
+- Value-based drafting (VBD): replacement-level baselines per position,
+  with RB/WR/TE sharing one pooled flex baseline (leftover players below
+  each position's own starter cutoff are pooled and re-ranked together)
+  instead of an arbitrary flex-share split.
+- Tiering via position-level gaps in VBD (default) or KMeans clustering
+  (toggle-able alternative).
+- **No real ADP data**: there's no free, reliable fantasy ADP API (nfl_data_py's
+  draft data is the NFL entry draft, not fantasy ADP), and scraping a
+  third-party ADP site is fragile/ToS-risky. Instead, a Sleeper "trending
+  adds" cross-reference is shown, explicitly labeled as a different, weaker
+  signal than ADP.
+- **Validation**: a rolling backtest — project from prior seasons only,
+  Spearman-correlate against each holdout season's actual finish, per
+  position — reported against a naive last-season-rank baseline (so the
+  model has to prove it adds signal) with both a games-floor-dropped and a
+  floor-imputed variant (the latter keeps injuries/busts who miss the
+  holdout games floor from being silently excluded and inflating accuracy).
+  Result so far: the model beats the naive baseline on the dropped variant,
+  but **not** on the honest floor-imputed variant — its multi-season blend
+  doesn't discount older data enough to catch players already declining,
+  while a plain last-season rank is more current and reacts to that decline
+  first. A real caveat, not swept under the rug — see the Draft Rankings
+  page's validation expander for the live numbers.
 
 ### Phase 3 — Weekly start/sit & lineup optimizer
 - Weekly projection model (rolling performance + matchup adjustment).
